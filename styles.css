@@ -1,0 +1,36 @@
+.header {
+    position: relative;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 70%;
+    left:15%;
+  }
+
+.page {
+  margin: auto;
+  text-align: center;
+  color: aliceblue;  
+  position: relative;
+  width: 70%;
+  font-family: 'Roboto';
+
+}
+
+.vis-container {
+  position: relative;
+  align-items: center;
+  object-fit: contain;
+}
+
+.card {
+  background-color: rgb(55, 2, 138);
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.background {
+  background-color: rgb(3, 151, 23);
+  padding: 10px;
+  font-size: large;
+}
