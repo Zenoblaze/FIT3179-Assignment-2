@@ -4,7 +4,7 @@
     "title":"Top 100 Biggest Esport Tournaments",
     "background": null,
     "data": {
-      "url": "HistoricalEsportData.csv"
+      "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Assignment-2/main/HistoricalEsportData.csv"
     },
     "params": [{
       "name": "points",
