@@ -6,9 +6,10 @@
     "url": "highest_earning_teams.csv"
   },
     "transform": [
+      {"calculate": "toNumber(datum.TotalUSDPrize)", "as": "Earnings"},
         {
           "window": [{"op": "rank", "as": "Ranking"}],
-          "sort": [{"field": "TotalUSDPrize", "order": "descending"}]
+          "sort": [{"field": "Earnings", "order": "descending"}]
         },
         {"filter": "datum.Ranking <= 25"}
     ],
@@ -22,6 +23,7 @@
           "type": "nominal",
           "axis": {
             "grid": true,
+            "labelAngle": 60,
             "gridOpacity": 0.1
           }
         },
@@ -33,6 +35,7 @@
             "gridOpacity": 0.7
           }
         },
+        "xOffset":{"field":"Game"},
 
         "color":{
           "field": "Game",
