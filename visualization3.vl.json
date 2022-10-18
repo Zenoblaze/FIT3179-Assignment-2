@@ -1,65 +1,59 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Top 50 Countries in Esports",
+  "title": "Top 25 Teams in Esports",
+  "background": null,
   "data": {
-    "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
+    "url": "highest_earning_teams.csv"
   },
-  "vconcat": [
-    {
-      "width": 600,
-      "height": 240,
-      "transform": [
-        {"filter": "datum.Rank <= 50"},
+    "transform": [
         {
           "window": [{"op": "rank", "as": "Ranking"}],
-          "sort": [{"field": "Ranking", "order": "descending"}]
-        }
-      ],
-      "mark": "circle",
-      "encoding": {
-        "x": {
-          "field": "Country",
-          "type": "nominal",
-          "sort": "Ranking",
-          "scale": {"domain": {"param": "brush"}},
-          "axis": {"title": ""}
-          
+          "sort": [{"field": "TotalUSDPrize", "order": "descending"}]
         },
-        "tooltip":[
-          {"field": "Country", "type": "nominal"},
-          {"field": "Rank", "type": "ordinal"},
-          {"field": "PlayerNumber", "type": "quantitative", "format": ","} 
-        ],
-        "y": {"field": "PlayerNumber", "type": "quantitative"}
-      }
-    },
-    
-    {
-      "width": 600,
-      "height": 60,
-      "transform": [{"filter": "datum.Rank <= 50"},
-      {
-        "window": [{"op": "rank", "as": "Ranking"}],
-        "sort": [{"field": "Ranking", "order": "descending"}]
-      }],
-      "mark": "circle",
-      "params": [
-        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
-      ],
+        {"filter": "datum.Ranking <= 25"}
+    ],
+      "width": 400,
+      "height": 240,
+
+      "mark": "bar",
       "encoding": {
         "x": {
-          "field": "Country",
+          "field": "TeamName",
           "type": "nominal",
-          "sort": "Ranking",
-          "axis": {"title": ""}
+          "axis": {
+            "grid": true,
+            "gridOpacity": 0.1
+          }
         },
         "y": {
-          "field": "PlayerNumber",
+          "field": "TotalUSDPrize",
           "type": "quantitative",
-          "axis": {"tickCount": 3, "grid": false}
-        }
-      }
-    }
-  ],
-  "config": {}
+          "axis": {
+            "grid": true,
+            "gridOpacity": 0.7
+          }
+        },
+
+        "color":{
+          "field": "Game",
+          "legend": false,
+          "scale": {
+            "domain": ["Dota 2", "Counter-Strike: Global Offensive", "Fortnite", "League of Legends",
+                      "PLAYERUNKNOWN'S BATTLEGROUNDS", "Arena of Valor", "StarCraft II", "Overwatch",
+                      "PLAYERUNKNOWN'S BATTLEGROUNDS Mobile", "Hearthstone"],
+            "range": ["#C0392B", "#F5B041", "#7D3C98","#527ABC","#DC7BF0","#77EA65","#E4B208","#bf3d00","#DC7BF0","#45B39D"]}      
+        },
+
+        "tooltip":[
+          {"field": "TeamName", "type": "nominal"},
+          {"field": "Game", "type": "nominal"},
+          {"field": "TotalUSDPrize", "type": "quantitative", "format": "$,"} 
+        ]
+      },
+  "config": {
+    "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite", "labelFontSize": 15},
+      "header": {"labelColor":"antiquewhite"},
+      "mark": {"color":"rgb(122, 91, 180)"},
+      "title": {"color":"antiquewhite"}
+  }
 }

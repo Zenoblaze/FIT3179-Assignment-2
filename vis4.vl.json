@@ -6,11 +6,6 @@
     "data": {
       "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Assignment-2/main/HistoricalEsportData.csv"
     },
-    "params": [{
-      "name": "points",
-      "select": "point"
-    }
-    ],
     "transform": [
       {"calculate": "toNumber(datum.Earnings)", "as": "Earnings"},
       {
@@ -19,15 +14,28 @@
       },
       {"filter": "datum.Ranking <= 100"}
     ],
-    "mark": "circle",  
+    "vconcat":[{
+      "params": [{
+        "name": "pts",
+        "select": {"type": "point", "fields": ["Game"]}
+      }],
+      "height": 400,
+      "width": 650,
+      "mark": "circle",
     "encoding": {
-      "size":{"value": 100},
-      "opacity":{"value": 0.9},
+      "size":{
+        "condition":{
+          "param": "pts",
+          "value": 200
+      },
+      "value": 50
+    },
+      "opacity":{"value": 0.8},
   
       "x": {
         "field": "Date",
         "type": "temporal",
-        "scale": {"zero": false}
+        "scale": {"domain": {"param": "brush", "encoding": "x"}}
       },
       "tooltip":[
         {"field": "Game", "type": "nominal"},
@@ -37,7 +45,48 @@
       "y": {
         "field": "Earnings",
         "type": "quantitative",
-        "scale": {"zero": false}
+        "scale": {"domain": {"param": "brush", "encoding": "y"}}
+      },
+      "color": {
+        "condition": {
+          "param": "pts",
+          "field": "Game",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Dota 2", "Counter-Strike: Global Offensive", "Fortnite", "League of Legends",
+                      "PLAYERUNKNOWN'S BATTLEGROUNDS", "Arena of Valor", "StarCraft II", "Overwatch",
+                      "PLAYERUNKNOWN'S BATTLEGROUNDS Mobile", "Hearthstone"],
+            "range": ["#C0392B", "#F5B041", "#7D3C98","#527ABC","#DC7BF0","#77EA65","#E4B208","#bf3d00","#DC7BF0","#45B39D"]}      
+        },
+        "value": "grey"
+        }
+    }
+    },
+    {
+    "hconcat":[{
+  
+    "height": 200,
+    "width": 200,
+    "mark": "circle",
+    "params": [
+      {"name": "brush", "select": {"type": "interval", "encodings": ["x", "y"]}}
+    ],  
+    "encoding": {
+      "size":{"value": 100},
+      "opacity":{"value": 0.9},
+  
+      "x": {
+        "field": "Date",
+        "type": "temporal"
+      },
+      "tooltip":[
+        {"field": "Game", "type": "nominal"},
+        {"field": "Ranking", "type": "ordinal"},
+        {"field": "Earnings", "type": "quantitative", "format": ","} 
+      ],
+      "y": {
+        "field": "Earnings",
+        "type": "quantitative"
       },
       "color": {
 
@@ -46,14 +95,108 @@
           "domain": ["Dota 2", "Counter-Strike: Global Offensive", "Fortnite", "League of Legends",
                      "PLAYERUNKNOWN'S BATTLEGROUNDS", "Arena of Valor", "StarCraft II", "Overwatch",
                     "PLAYERUNKNOWN'S BATTLEGROUNDS Mobile", "Hearthstone"],
-          "range": ["#C0392B", "#F5B041", "#7D3C98","#527ABC","#DC7BF0","#77EA65","#E4B208","#A6ACAF","#DC7BF0","#45B39D"]}
+          "range": ["#C0392B", "#F5B041", "#7D3C98","#527ABC","#DC7BF0","#77EA65","#E4B208","#bf3d00","#DC7BF0","#45B39D"]}
                   }
+  }
+  },
+  {
+    "height": 200,
+    "width": 150,
+    "description": "A scatterplot showing body mass and flipper lengths of penguins.",
+    "background": null,
+    "data": {
+      "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Assignment-2/main/HistoricalEsportData.csv"
     },
+    "transform": [
+      {"calculate": "toNumber(datum.Earnings)", "as": "Earnings"},
+      {"aggregate": [{
+        "op": "sum",
+        "field": "Earnings",
+        "as": "sum_game"
+      }],
+      "groupby": ["Game"]},
+      {
+        "window": [{"op": "rank", "field": "sum_game", "as": "Ranking"}],
+        "sort": [{"field": "sum_game", "order": "descending"}]
+      },
+      {"filter": "datum.Ranking <= 10"}
+    ],     
+        "encoding": {
+          "x": {
+            "field": "sum_game",
+            "type": "quantitative",
+            "scale": {"zero": false},
+            "axis": {
+              "gridOpacity": 0.2,
+              "domain": false,
+              "ticks":true,
+              "labelColor":"antiquewhite",
+              "titleColor":"antiquewhite",
+              "title":"Total Earnings USD"
+            }
+          },
+          "tooltip":[
+            {"field": "Game", "type": "nominal"},
+            {"field": "Ranking", "type": "ordinal"},
+            {"field": "sum_game", "type": "quantitative", "format": ","} 
+          ],
+          "y": {
+            "field": "Game",
+            "type": "nominal",
+            "sort": {"field": "Ranking", "order":"descending"},
+            "axis": {"labels": false, "ticks": false, "title":null}
+          },
+          "color": {
+            "condition":{
+              "param": "pts",
+              "field": "Game",
+              "type": "nominal",
+              "legend": false,
+              "scale": {
+                "domain": ["Dota 2", "Counter-Strike: Global Offensive", "Fortnite", "League of Legends",
+                          "PLAYERUNKNOWN'S BATTLEGROUNDS", "Arena of Valor", "StarCraft II", "Overwatch",
+                          "PLAYERUNKNOWN'S BATTLEGROUNDS Mobile", "Hearthstone"],
+                "range": ["#C0392B", "#F5B041", "#7D3C98","#527ABC","#DC7BF0","#77EA65","#E4B208","#bf3d00","#DC7BF0","#45B39D"]}
+            
+            },
+            "value":"grey"
+          }
+        },
+        "layer":[{
+          "mark": "bar",
+          "params":[
+            {"name": "bar_pt", "select": {"type": "point"}}
+          ]
+    },  {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "size": 18,
+        "baseline":  "middle",
+        "dx": 5
+    },
+    "encoding": {
+      "text": {
+        "field": "Game", "type": "nominal"
+      }
+    }
+    }
+  ]
+}
+  ]
+    }
+  
+  
+  ],
+    
     "config": {
       "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite"},
       "legend": {"labelColor":"antiquewhite"},
       "header": {"labelColor":"antiquewhite"},
       "mark": {"color":"antiquewhite"},
-      "title": {"color":"antiquewhite"}
+      "title": {"color":"antiquewhite"},
+      "view": {
+        "stroke": "transparent"
+      }
     }
   }

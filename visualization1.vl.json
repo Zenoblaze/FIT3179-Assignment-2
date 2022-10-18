@@ -6,8 +6,8 @@
   "vconcat":[
     {
     "hconcat":[{
-    "width": 600,
-    "height": 300,
+    "width": 700,
+    "height": 400,
     "title": null,
 
     "projection": {"type": "equirectangular"},
@@ -79,6 +79,15 @@
           "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
         },
         "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+      },
+      {
+        "data":{
+          "url": "highest_earning_players.csv"
+        },
+        "mark": {
+          "type": "circle"
+        
+      }
       }
     ],
     "config": {
@@ -96,7 +105,7 @@
       "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
     },
         "width": 100,
-        "height": 300,
+        "height": 400,
         "transform": [
           {"filter": "datum.Rank <= 25"},
           {

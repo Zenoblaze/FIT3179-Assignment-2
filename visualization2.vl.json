@@ -1,38 +1,57 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Top 25 Countries in Esports",
-  "background":null,
+  "title": "Top 25 Players in Esports",
+  "background": null,
   "data": {
-    "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
+    "url": "highest_earning_players.csv"
   },
-      "width": 300,
-      "height": 100,
-      "transform": [
-        {"filter": "datum.Rank <= 25"},
+    "transform": [
         {
           "window": [{"op": "rank", "as": "Ranking"}],
-          "sort": [{"field": "Ranking", "order": "descending"}]
-        }
-      ],
-      "mark": "bar",
+          "sort": [{"field": "TotalUSDPrize", "order": "descending"}]
+        },
+        {"filter": "datum.Ranking <= 15"}
+    ],
+      "width": 300,
+      "height": 240,
+
+      "mark": "circle",
       "encoding": {
+        "size":{
+          "value":250
+        },
         "x": {
-          "field": "Country",
+          "field": "CurrentHandle",
           "type": "nominal",
-          "sort": "-y",
-          "axis": {"title": ""}
+          "axis": {
+
+            "grid": true,
+            "gridOpacity": 0.1
+          }
           
         },
+
+        "y": {
+          "field": "TotalUSDPrize",
+          "type": "quantitative",
+          "axis": {
+            "grid": true,
+            "gridOpacity": 0.7
+          }
+        },
+
+        "color":{
+          "field": "Game"},
+
         "tooltip":[
-          {"field": "Country", "type": "nominal"},
-          {"field": "Rank", "type": "ordinal"},
+          {"field": "CurrentHandle", "type": "nominal"},
+          {"field": "Game", "type": "nominal"},
           {"field": "TotalUSDPrize", "type": "quantitative", "format": "$,"} 
-        ],
-        "y": {"field": "TotalUSDPrize", "type": "quantitative"}
+        ]
       },
   "config": {
-      "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite", "labelFontSize": 15},
-      "legend": {"labelColor":"antiquewhite", "titleFontSize": 15},
+    "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite", "labelFontSize": 15},
+      "legend": {"labelColor":"antiquewhite", "titleFontSize": 15, "titleColor":"antiquewhite"},
       "header": {"labelColor":"antiquewhite"},
       "mark": {"color":"rgb(122, 91, 180)"},
       "title": {"color":"antiquewhite"}
