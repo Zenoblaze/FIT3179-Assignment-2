@@ -3,7 +3,7 @@
     "description": "A scatterplot showing body mass and flipper lengths of penguins.",
     "background": null,
     "data": {
-      "url": "HistoricalEsportData.csv"
+      "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Assignment-2/main/HistoricalEsportData.csv"
     },
     "transform": [
       {"calculate": "toNumber(datum.Earnings)", "as": "Earnings"},
