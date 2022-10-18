@@ -1,72 +1,199 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Esports Earnings Per Country",
-  "width": 800,
-  "height": 400,
-  "projection": {"type": "equirectangular"},
-  "layer": [
+  "title": null,
+  "padding": null,
+  "background":null,
+  "vconcat":[
     {
-      "data": {
-        "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/ne_110m.json",
-        "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
-      },
-      "transform": [
-        {
-          "lookup": "properties.NAME",
-          "from": {
-            "data": {
-              "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
+    "hconcat":[{
+    "width": 600,
+    "height": 300,
+    "title": null,
+
+    "projection": {"type": "equirectangular"},
+    "layer": [
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/ne_110m.json",
+          "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+        },
+        "transform": [
+          {
+            "lookup": "properties.NAME",
+            "from": {
+              "data": {
+                "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
+              },
+              "key": "Country",
+              "fields": ["TotalUSDPrize", "PlayerNumber"]
+            }
+          },
+          {
+            "calculate": "datum.TotalUSDPrize/(datum.PlayerNumber + 0.01)",
+            "as": "Earning Per Player"
+          }
+        ],
+        "mark": {"type": "geoshape", "stroke": "black"},
+        "encoding": {
+          "color": {
+            "field": "Earning Per Player",
+            "type": "quantitative",
+            "legend":{
+              "direction": "horizontal",
+              "orient": "none",
+              "legendX": 25,
+              "legendY": 200
             },
-            "key": "Country",
-            "fields": ["TotalUSDPrize", "PlayerNumber"]
+            "scale": {
+              "type": "linear",
+              "domain": [0, 10, 50, 100, 1000, 2000, 3000, 4000, 5000],
+              "range": [
+                "#ffffe5",
+                "#f7fcb9",
+                "#d9f0a3",
+                "#addd8e",
+                "#78c679",
+                "#41ab5d",
+                "#238443",
+                "#006837",
+                "#004529"
+              ]
+            }
+          },
+          "tooltip": [
+            {"field": "properties.NAME", "type": "nominal", "title": "Country"},
+            {"field": "Earning Per Player", "type": "quantitative", "format":"$,.2f"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+          "format": {"type": "topojson", "feature": "oceans"}
+        },
+        "mark": {"type": "geoshape", "fill": "skyblue"}
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/ne_110m.json",
+          "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
+        },
+        "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+      }
+    ],
+    "config": {
+      "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite"},
+      "legend": {"labelColor":"antiquewhite", "titleFontSize": 15},
+      "header": {"labelColor":"antiquewhite"},
+      "mark": {"color":"antiquewhite"},
+      "title": {"color":"antiquewhite"}
+    }
+  },
+  {
+    "title": "Top 25 Countries in Esports",
+    "background":null,
+    "data": {
+      "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
+    },
+        "width": 100,
+        "height": 300,
+        "transform": [
+          {"filter": "datum.Rank <= 25"},
+          {
+            "window": [{"op": "rank", "as": "Ranking"}],
+            "sort": [{"field": "Ranking", "order": "descending"}]
+          }
+        ],
+        "mark": "bar",
+        "encoding": {
+          "y": {
+            "field": "Country",
+            "type": "nominal",
+            "sort": "-x",
+            "axis": {"title": ""}
+            
+          },
+          "tooltip":[
+            {"field": "Country", "type": "nominal"},
+            {"field": "Rank", "type": "ordinal"},
+            {"field": "TotalUSDPrize", "type": "quantitative", "format": "$,"} 
+          ],
+          "x": {"field": "TotalUSDPrize", "type": "quantitative"}
+        }
+  }
+  ]
+    },
+    {
+      "title": "Top 50 Countries in Esports",
+      "data": {
+        "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
+      },
+      "vconcat": [
+        {
+          "width": 600,
+          "height": 100,
+          "transform": [
+            {"filter": "datum.Rank <= 50"},
+            {
+              "window": [{"op": "rank", "as": "Ranking"}],
+              "sort": [{"field": "Ranking", "order": "descending"}]
+            }
+          ],
+          "mark": "circle",
+          "encoding": {
+            "x": {
+              "field": "Country",
+              "type": "nominal",
+              "sort": {"field": "Ranking", "order":"ascending"},
+              "scale": {"domain": {"param": "brush"}},
+              "axis": {"title": ""}
+              
+            },
+            "tooltip":[
+              {"field": "Country", "type": "nominal"},
+              {"field": "Rank", "type": "ordinal"},
+              {"field": "PlayerNumber", "type": "quantitative", "format": ","} 
+            ],
+            "y": {"field": "PlayerNumber", "type": "quantitative"}
           }
         },
+        
         {
-          "calculate": "datum.TotalUSDPrize/(datum.PlayerNumber + 0.01)",
-          "as": "Earning Per Player"
+          "width": 600,
+          "height": 50,
+          "transform": [{"filter": "datum.Rank <= 50"},
+          {
+            "window": [{"op": "rank", "as": "Ranking"}],
+            "sort": [{"field": "Ranking", "order": "descending"}]
+          }],
+          "mark": "circle",
+          "params": [
+            {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
+          ],
+          "encoding": {
+            "x": {
+              "field": "Country",
+              "type": "nominal",
+              "sort": "Ranking",
+              "axis": {"title": ""}
+            },
+            "y": {
+              "field": "PlayerNumber",
+              "type": "quantitative",
+              "axis": {"tickCount": 3, "grid": false}
+            }
+          }
         }
       ],
-      "mark": {"type": "geoshape", "stroke": "black"},
-      "encoding": {
-        "color": {
-          "field": "Earning Per Player",
-          "type": "quantitative",
-          "scale": {
-            "type": "linear",
-            "domain": [0, 10, 50, 100, 1000, 2000, 3000, 4000, 5000],
-            "range": [
-              "#ffffe5",
-              "#f7fcb9",
-              "#d9f0a3",
-              "#addd8e",
-              "#78c679",
-              "#41ab5d",
-              "#238443",
-              "#006837",
-              "#004529"
-            ]
-          }
-        },
-        "tooltip": [
-          {"field": "properties.NAME", "type": "nominal", "title": "Country"},
-          {"field": "Earning Per Player", "type": "quantitative"}
-        ]
-      }
-    },
-    {
-      "data": {
-        "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
-        "format": {"type": "topojson", "feature": "oceans"}
-      },
-      "mark": {"type": "geoshape", "fill": "skyblue"}
-    },
-    {
-      "data": {
-        "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/ne_110m.json",
-        "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
-      },
-      "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+      "config": {}
     }
-  ],
-  "config": {}
+  ]
+  ,
+  "config": {
+    "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite", "labelFontSize": 15},
+    "legend": {"labelColor":"antiquewhite", "titleFontSize": 15},
+    "header": {"labelColor":"antiquewhite"},
+    "mark": {"color":"rgb(122, 91, 180)"},
+    "title": {"color":"antiquewhite"}
+}
 }

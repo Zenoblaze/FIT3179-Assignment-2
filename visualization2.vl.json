@@ -1,15 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Top 50 Countries in Esports",
+  "title": "Top 25 Countries in Esports",
+  "background":null,
   "data": {
     "url": "https://raw.githubusercontent.com/Zenoblaze/FIT3179-Week-9-Homework/main/Esports%20Data%20Country%20Cleaned.csv"
   },
-  "vconcat": [
-    {
-      "width": 480,
-      "height": 240,
+      "width": 300,
+      "height": 100,
       "transform": [
-        {"filter": "datum.Rank <= 50"},
+        {"filter": "datum.Rank <= 25"},
         {
           "window": [{"op": "rank", "as": "Ranking"}],
           "sort": [{"field": "Ranking", "order": "descending"}]
@@ -21,7 +20,6 @@
           "field": "Country",
           "type": "nominal",
           "sort": "-y",
-          "scale": {"domain": {"param": "brush"}},
           "axis": {"title": ""}
           
         },
@@ -31,31 +29,12 @@
           {"field": "TotalUSDPrize", "type": "quantitative", "format": "$,"} 
         ],
         "y": {"field": "TotalUSDPrize", "type": "quantitative"}
-      }
-    },
-    
-    {
-      "width": 480,
-      "height": 60,
-      "transform": [{"filter": "datum.Rank <= 50"}],
-      "mark": "bar",
-      "params": [
-        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
-      ],
-      "encoding": {
-        "x": {
-          "field": "Country",
-          "type": "nominal",
-          "sort": "-y",
-          "axis": {"title": ""}
-        },
-        "y": {
-          "field": "TotalUSDPrize",
-          "type": "quantitative",
-          "axis": {"tickCount": 3, "grid": false}
-        }
-      }
-    }
-  ],
-  "config": {}
+      },
+  "config": {
+      "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite", "labelFontSize": 15},
+      "legend": {"labelColor":"antiquewhite", "titleFontSize": 15},
+      "header": {"labelColor":"antiquewhite"},
+      "mark": {"color":"rgb(122, 91, 180)"},
+      "title": {"color":"antiquewhite"}
+  }
 }

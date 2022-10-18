@@ -1,0 +1,59 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A scatterplot of the top 100 earning tournaments in esports.",
+    "title":"Top 100 Biggest Esport Tournaments",
+    "background": null,
+    "data": {
+      "url": "HistoricalEsportData.csv"
+    },
+    "params": [{
+      "name": "points",
+      "select": "point"
+    }
+    ],
+    "transform": [
+      {"calculate": "toNumber(datum.Earnings)", "as": "Earnings"},
+      {
+        "window": [{"op": "rank", "as": "Ranking"}],
+        "sort": [{"field": "Earnings", "order": "descending"}]
+      },
+      {"filter": "datum.Ranking <= 100"}
+    ],
+    "mark": "circle",  
+    "encoding": {
+      "size":{"value": 100},
+      "opacity":{"value": 0.9},
+  
+      "x": {
+        "field": "Date",
+        "type": "temporal",
+        "scale": {"zero": false}
+      },
+      "tooltip":[
+        {"field": "Game", "type": "nominal"},
+        {"field": "Ranking", "type": "ordinal"},
+        {"field": "Earnings", "type": "quantitative", "format": ","} 
+      ],
+      "y": {
+        "field": "Earnings",
+        "type": "quantitative",
+        "scale": {"zero": false}
+      },
+      "color": {
+
+        "field": "Game", "type": "nominal",
+        "scale": {
+          "domain": ["Dota 2", "Counter-Strike: Global Offensive", "Fortnite", "League of Legends",
+                     "PLAYERUNKNOWN'S BATTLEGROUNDS", "Arena of Valor", "StarCraft II", "Overwatch",
+                    "PLAYERUNKNOWN'S BATTLEGROUNDS Mobile", "Hearthstone"],
+          "range": ["#C0392B", "#F5B041", "#7D3C98","#527ABC","#DC7BF0","#77EA65","#E4B208","#A6ACAF","#DC7BF0","#45B39D"]}
+                  }
+    },
+    "config": {
+      "axis": {"labelColor":"antiquewhite", "titleColor":"antiquewhite"},
+      "legend": {"labelColor":"antiquewhite"},
+      "header": {"labelColor":"antiquewhite"},
+      "mark": {"color":"antiquewhite"},
+      "title": {"color":"antiquewhite"}
+    }
+  }

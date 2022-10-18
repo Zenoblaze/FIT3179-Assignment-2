@@ -1,19 +1,21 @@
 .header {
     position: relative;
-    text-align: center;
+    text-align: left;
     padding: 20px;
     margin-bottom: 20px;
-    width: 70%;
-    left:15%;
+    width: 1200px;
   }
 
 .page {
   margin: auto;
-  text-align: center;
-  color: aliceblue;  
+  text-align: left;
+  color: aliceblue;
+  background-color: rgb(122, 91, 180);
+  padding: 5px;
+  border-radius: 20px;  
   position: relative;
-  width: 70%;
-  font-family: 'Roboto';
+  width: 1200px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
 }
 
@@ -21,16 +23,21 @@
   position: relative;
   align-items: center;
   object-fit: contain;
+  display: block;
+  width: 100%;
 }
 
 .card {
-  background-color: rgb(55, 2, 138);
+  background-color: rgb(37, 27, 73);
   padding: 20px;
   margin-top: 10px;
+  border-radius: 20px;
+  
+  
 }
 
 .background {
-  background-color: rgb(3, 151, 23);
+  background-image: url("esport background.jpg");
   padding: 10px;
   font-size: large;
 }

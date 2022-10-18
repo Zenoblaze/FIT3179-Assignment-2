@@ -6,7 +6,7 @@
   },
   "vconcat": [
     {
-      "width": 480,
+      "width": 600,
       "height": 240,
       "transform": [
         {"filter": "datum.Rank <= 50"},
@@ -35,7 +35,7 @@
     },
     
     {
-      "width": 480,
+      "width": 600,
       "height": 60,
       "transform": [{"filter": "datum.Rank <= 50"},
       {

@@ -1,8 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Esports Earnings Per Country",
-  "width": 800,
+  "width": 500,
   "height": 400,
+  "background": "#dd0404",
+
   "projection": {"type": "equirectangular"},
   "layer": [
     {
@@ -26,6 +28,7 @@
           "as": "Earning Per Player"
         }
       ],
+      
       "mark": {"type": "geoshape", "stroke": "black"},
       "encoding": {
         "color": {
